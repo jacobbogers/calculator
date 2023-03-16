@@ -10,7 +10,7 @@ The standard `create-react-app` script targets apply:
 
 -   `npm start`: running the app in dev mode
 -   `npm run build`: create production build in directory `./build`
--   `npm run test`: running test
+-   `npm run test`: running test in watch mode.
 
 The following script targets have been added:
 
