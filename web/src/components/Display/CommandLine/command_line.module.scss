@@ -1,0 +1,30 @@
+.command_line {
+    grid-column: 1 / span 2;
+    width: 100%;
+    position: relative;
+    top: 2px;
+
+    min-height: 32px;
+    height: 30px;
+
+    line-height: 1;
+    transition: height 0.2s;
+
+    &.start {
+        transition: all 0.0000001s;
+        height: 120px;
+    }
+}
+
+.command_line > div {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 32px;
+}
+
+.command_line > div > span {
+    white-space: nowrap;
+    font-size: 30px;
+    display: block;
+}

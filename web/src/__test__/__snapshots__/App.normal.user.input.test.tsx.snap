@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Normal User input user journey: Entering "9 x 5.2", 2x click "=" button, x 34 = 1`] = `
+Object {
+  "changeOnReadyOrError": 0,
+  "commandLine": Array [
+    Object {
+      "payload": "9",
+      "type": "digit",
+    },
+    Object {
+      "type": "multiply",
+    },
+    Object {
+      "payload": "5",
+      "type": "digit",
+    },
+    Object {
+      "payload": ".",
+      "type": "digit",
+    },
+    Object {
+      "payload": "2",
+      "type": "digit",
+    },
+  ],
+  "history": Array [],
+  "inTransit": false,
+  "serverError": Object {
+    "error": undefined,
+  },
+  "tainted": true,
+}
+`;
+
+exports[`Normal User input user journey: Entering "9 x 5.2", 2x click "=" button, x 34 = 2`] = `
+Object {
+  "changeOnReadyOrError": 1,
+  "commandLine": Array [
+    Object {
+      "payload": 46.800000000000004,
+      "type": "value",
+    },
+  ],
+  "history": Array [
+    Object {
+      "keyedInExpression": Array [
+        Object {
+          "payload": "9",
+          "type": "digit",
+        },
+        Object {
+          "type": "multiply",
+        },
+        Object {
+          "payload": "5",
+          "type": "digit",
+        },
+        Object {
+          "payload": ".",
+          "type": "digit",
+        },
+        Object {
+          "payload": "2",
+          "type": "digit",
+        },
+      ],
+      "result": Object {
+        "payload": 46.800000000000004,
+        "type": "value",
+      },
+    },
+  ],
+  "inTransit": false,
+  "serverError": Object {},
+  "tainted": false,
+}
+`;
+
+exports[`Normal User input user journey: Entering "9 x 5.2", 2x click "=" button, x 34 = 3`] = `
+Object {
+  "changeOnReadyOrError": 2,
+  "commandLine": Array [
+    Object {
+      "payload": 46.800000000000004,
+      "type": "value",
+    },
+    Object {
+      "type": "divide",
+    },
+    Object {
+      "payload": ".",
+      "type": "digit",
+    },
+    Object {
+      "payload": "6",
+      "type": "digit",
+    },
+  ],
+  "history": Array [
+    Object {
+      "keyedInExpression": Array [
+        Object {
+          "payload": "9",
+          "type": "digit",
+        },
+        Object {
+          "type": "multiply",
+        },
+        Object {
+          "payload": "5",
+          "type": "digit",
+        },
+        Object {
+          "payload": ".",
+          "type": "digit",
+        },
+        Object {
+          "payload": "2",
+          "type": "digit",
+        },
+      ],
+      "result": Object {
+        "payload": 46.800000000000004,
+        "type": "value",
+      },
+    },
+  ],
+  "inTransit": false,
+  "serverError": Object {},
+  "tainted": true,
+}
+`;

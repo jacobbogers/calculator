@@ -1,0 +1,27 @@
+.last_history {
+    max-width: 100%;
+    min-height: 20px;
+    height: fit-content;
+
+    white-space: nowrap;
+
+    line-height: 1;
+
+    /* under transition */
+    color: #70757a;
+    font-size: 13px;
+    transition: color 0.2s, font-size 0.2s;
+    transition-timing-function: ease-in;
+    &.start {
+        transition: all 0.00001s;
+        font-size: 27.2px;
+        color: #000;
+    }
+}
+
+.last_history > span {
+    width: 100%;
+    display: block;
+    text-align: right;
+    margin-top: calc((22px - 13px) / 2);
+}

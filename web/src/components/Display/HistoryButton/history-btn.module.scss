@@ -1,0 +1,18 @@
+.history {
+    flex: none;
+    width: 40px;
+    height: 22px;
+    color: #70757a;
+    & > svg {
+        display: block;
+        height: 100%;
+        /*width: 100%;*/
+    }
+    &.history-active {
+        color: #1a73e8;
+    }
+}
+
+.history:hover > svg {
+    fill: #1a0dab;
+}

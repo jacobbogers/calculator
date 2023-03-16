@@ -1,0 +1,42 @@
+.display {
+    /* display is itself a grid item */
+    /* layout and sizing */
+    grid-column: 1 / span 7;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    width: 100%;
+    height: 72px;
+    padding-top: 10px;
+    padding-left: 14px;
+    padding-right: 10px;
+
+    overflow: hidden;
+
+    /* border and background */
+    border: 1px solid rgb(213, 215, 219);
+    border-color: #dadce0;
+}
+
+.theGrid {
+    /* inner layout */
+    display: grid;
+    grid-template-rows: minmax(22px, auto) 1fr;
+    grid-template-columns: 40px 589.5px;
+
+    /* text direction and alignment */
+    direction: ltr;
+
+    /* misc */
+    user-select: none;
+    overflow: hidden;
+}
+
+.display:hover {
+    border-top-color: #70757a;
+    box-shadow: inset 0 1px 2px rgb(0, 0, 0, 0.1);
+}
+
+.display:focus {
+    border: 1px solid #4285f4;
+    box-shadow: inset 0 1px 2px rgb(0, 0, 0, 0.3);
+}

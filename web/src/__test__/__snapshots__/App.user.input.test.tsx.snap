@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Errors and edge cases/User input check lastHistory line after: Enter 2 expressions in succession first result is ok, second result is an error, press number button 1`] = `
+Object {
+  "changeOnReadyOrError": 1,
+  "commandLine": Array [
+    Object {
+      "payload": 9.487804878048781,
+      "type": "value",
+    },
+  ],
+  "history": Array [
+    Object {
+      "keyedInExpression": Array [
+        Object {
+          "payload": "9",
+          "type": "digit",
+        },
+        Object {
+          "type": "add",
+        },
+        Object {
+          "payload": "4",
+          "type": "digit",
+        },
+        Object {
+          "type": "divide",
+        },
+        Object {
+          "payload": "8",
+          "type": "digit",
+        },
+        Object {
+          "payload": ".",
+          "type": "digit",
+        },
+        Object {
+          "payload": "2",
+          "type": "digit",
+        },
+      ],
+      "result": Object {
+        "payload": 9.487804878048781,
+        "type": "value",
+      },
+    },
+  ],
+  "inTransit": false,
+  "serverError": Object {},
+  "tainted": false,
+}
+`;

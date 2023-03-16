@@ -1,0 +1,8 @@
+
+
+.app {
+    cursor: pointer;
+    &.wait {
+        cursor: wait;
+    }
+}

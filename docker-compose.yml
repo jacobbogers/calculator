@@ -1,0 +1,33 @@
+version: "3"
+name: calculator
+services:
+  api:
+    environment:
+      CALCULATOR_API_PORT: 4000
+    image: calculator_api
+    hostname: api.com
+    container_name: calculator_api
+    build: ./api
+    #expose:
+    #  - 4000
+    ports:
+      - 8090:4000/tcp
+    networks:
+      - calculator-net
+  web:
+    depends_on:
+      - api
+    environment:
+      NGINX_LISTEN_PORT: 80
+      CALCULATOR_API_PORT: 4000
+      CALCULATOR_API_HOST: api.com 
+    image: calculator_web
+    container_name: calculator_web
+    build: ./web
+    ports:
+      - 8080:80/tcp
+    networks:
+      - calculator-net
+networks:
+  calculator-net:
+    driver: bridge

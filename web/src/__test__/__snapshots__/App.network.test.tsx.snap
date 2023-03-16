@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Network fetch Non http-ok response, Non JSON response 1`] = `
+Object {
+  "error": Object {
+    "code": 9300,
+    "message": "Server responded with an error. The response was not in json format: <html><head></head><body>Error</body></head>",
+    "reqId": "N/A",
+  },
+}
+`;
+
+exports[`Network fetch Non http-ok response, it is JSON response, but rejected by schema 1`] = `
+Object {
+  "error": Object {
+    "code": 9400,
+    "message": "Server responded with an error. The response was in json, but unknown format: { \\"hello\\":\\"world\\" }",
+    "reqId": "N/A",
+  },
+}
+`;
+
+exports[`Network fetch http-ok response, but JSONschema rejects response 1`] = `
+Object {
+  "error": Object {
+    "code": 9600,
+    "message": "Server responded ok. THe response was in json, but unknown format: { \\"schema\\":\\"reject\\" }",
+    "reqId": "N/A",
+  },
+}
+`;
+
+exports[`Network fetch http-ok response, but non JSON response 1`] = `
+Object {
+  "error": Object {
+    "code": 9500,
+    "message": "Server responded ok. The response was not in json format: <html><head></head><body>Welcome to nginx</body></head>",
+    "reqId": "N/A",
+  },
+}
+`;
