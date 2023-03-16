@@ -1,11 +1,11 @@
 .keyboard {
-  /*  "stretch" will make replaced elements look bad, the initial value is "legacy" */
-  justify-items: normal;
-  align-items: stretch;
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(7, 85px);
-  grid-template-rows: auto;
-  grid-auto-rows: 36px;
-  width: fit-content;
+    /*  "stretch" will make replaced elements look bad, the initial value is "legacy" */
+    justify-items: normal;
+    align-items: stretch;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(7, 85px);
+    grid-template-rows: auto;
+    grid-auto-rows: 36px;
+    width: fit-content;
 }

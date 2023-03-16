@@ -2,6 +2,7 @@ node_modules
 .jest-cache
 .vscode
 build
+dist
 coverage
 .eslint-ignore
 .gitignore

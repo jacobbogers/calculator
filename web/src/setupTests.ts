@@ -1,6 +1,8 @@
-import fetchMock from 'jest-fetch-mock';
-export * from '@testing-library/react';
+import createFetchMock from 'vitest-fetch-mock';
+import { vi } from 'vitest';
+export { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
-fetchMock.enableMocks();
+const fetchMocker = createFetchMock(vi);
 
-export { fetchMock };
+// sets globalThis.fetch and globalThis.fetchMock to our mocked version
+fetchMocker.enableMocks();

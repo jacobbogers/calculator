@@ -1,133 +1,133 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Normal User input user journey: Entering "9 x 5.2", 2x click "=" button, x 34 = 1`] = `
-Object {
+exports[`Normal User input > user journey: Entering "9 x 5.2", 2x click "=" button, x 34 = 1`] = `
+{
   "changeOnReadyOrError": 0,
-  "commandLine": Array [
-    Object {
+  "commandLine": [
+    {
       "payload": "9",
       "type": "digit",
     },
-    Object {
+    {
       "type": "multiply",
     },
-    Object {
+    {
       "payload": "5",
       "type": "digit",
     },
-    Object {
+    {
       "payload": ".",
       "type": "digit",
     },
-    Object {
+    {
       "payload": "2",
       "type": "digit",
     },
   ],
-  "history": Array [],
+  "history": [],
   "inTransit": false,
-  "serverError": Object {
+  "serverError": {
     "error": undefined,
   },
   "tainted": true,
 }
 `;
 
-exports[`Normal User input user journey: Entering "9 x 5.2", 2x click "=" button, x 34 = 2`] = `
-Object {
+exports[`Normal User input > user journey: Entering "9 x 5.2", 2x click "=" button, x 34 = 2`] = `
+{
   "changeOnReadyOrError": 1,
-  "commandLine": Array [
-    Object {
+  "commandLine": [
+    {
       "payload": 46.800000000000004,
       "type": "value",
     },
   ],
-  "history": Array [
-    Object {
-      "keyedInExpression": Array [
-        Object {
+  "history": [
+    {
+      "keyedInExpression": [
+        {
           "payload": "9",
           "type": "digit",
         },
-        Object {
+        {
           "type": "multiply",
         },
-        Object {
+        {
           "payload": "5",
           "type": "digit",
         },
-        Object {
+        {
           "payload": ".",
           "type": "digit",
         },
-        Object {
+        {
           "payload": "2",
           "type": "digit",
         },
       ],
-      "result": Object {
+      "result": {
         "payload": 46.800000000000004,
         "type": "value",
       },
     },
   ],
   "inTransit": false,
-  "serverError": Object {},
+  "serverError": {},
   "tainted": false,
 }
 `;
 
-exports[`Normal User input user journey: Entering "9 x 5.2", 2x click "=" button, x 34 = 3`] = `
-Object {
+exports[`Normal User input > user journey: Entering "9 x 5.2", 2x click "=" button, x 34 = 3`] = `
+{
   "changeOnReadyOrError": 2,
-  "commandLine": Array [
-    Object {
+  "commandLine": [
+    {
       "payload": 46.800000000000004,
       "type": "value",
     },
-    Object {
+    {
       "type": "divide",
     },
-    Object {
+    {
       "payload": ".",
       "type": "digit",
     },
-    Object {
+    {
       "payload": "6",
       "type": "digit",
     },
   ],
-  "history": Array [
-    Object {
-      "keyedInExpression": Array [
-        Object {
+  "history": [
+    {
+      "keyedInExpression": [
+        {
           "payload": "9",
           "type": "digit",
         },
-        Object {
+        {
           "type": "multiply",
         },
-        Object {
+        {
           "payload": "5",
           "type": "digit",
         },
-        Object {
+        {
           "payload": ".",
           "type": "digit",
         },
-        Object {
+        {
           "payload": "2",
           "type": "digit",
         },
       ],
-      "result": Object {
+      "result": {
         "payload": 46.800000000000004,
         "type": "value",
       },
     },
   ],
   "inTransit": false,
-  "serverError": Object {},
+  "serverError": {},
   "tainted": true,
 }
 `;

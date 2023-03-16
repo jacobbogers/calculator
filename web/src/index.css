@@ -1,32 +1,32 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
-  /* some resets */
-  height: 100vh;
-  width: 100vw;
+    /* some resets */
+    height: 100vh;
+    width: 100vw;
 }
 
 body {
-  /* some resets */
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  /* base */
-  background: #fff;
-  font-family: arial, sans-serif;
-  font-size: 14px;
-  font-weight: normal;
-  color: #202124;
+    /* some resets */
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    /* base */
+    background: #fff;
+    font-family: arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    color: #202124;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #root {
-  /* TODO: put in media query to make responsive */
-  min-height: 72px;
-  line-height: 1;
+    /* TODO: put in media query to make responsive */
+    min-height: 72px;
+    line-height: 1;
 }
