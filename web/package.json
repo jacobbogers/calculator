@@ -74,7 +74,7 @@
         "test": "node scripts/test.js",
         "testci": "cross-env CI=true node scripts/test.js --coverage",
         "lint": "eslint src/**/*.ts src/**/*.tsx",
-        "prettier-format": "npx prettier --config .prettierrc src/**/*.ts src/**/*.tsx --write"
+        "prettier-format": "prettier --config .prettierrc src/**/*.ts src/**/*.tsx --write"
     },
     "eslintConfig": {
         "root": true,
@@ -184,6 +184,7 @@
         "http-proxy-middleware": "2.0.6",
         "jest-fetch-mock": "3.0.3",
         "node-fetch": "3.3.1",
+        "prettier": "2.8.4",
         "react-app-polyfill": "3.0.0",
         "redux-devtools-extension": "2.13.9"
     }
