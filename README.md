@@ -1,25 +1,45 @@
 # Google-like Calculator Project
 
-**The scope of the project is limited to:**
+## The scope of the project is limited to:
 
-Use of the mathematical operators:
+### Use of the mathematical operators:
 
 -  `+`: addition.
 -  `-`: subtraction
 -  `×`: multiplication
 -  `÷`: division
 
-Use of the edit control buttons:
+### Use of the edit control buttons:
 
 -  `CE`: clear entry (backspace)
 -  `CA`: clear All (only clears result entry after `=` is pressed)
 
+### Output formatting:
+
+Some floating point numbers are formatted in shorter form (following the rules of google calculator) to make it readable to a human.
+
+Example: `0.2 + 0.4` is `0.6` instead of `0.6000000000000001`
+
+The number itself is not adjusted to be `0.6` it is only visually adjusted for display.
+
+### Google expression history
+
+Google expression history is implemented, although only (for now) the previous expression/result is visually shown.
+
+### Google bugs avoided
+
+It seems incomplete fractions can be entered in google calculator
+
+Example`.-.` (this will lead to an error mention).
+
+It is not possible to enter such calculations in the first place.
 
 **What is NOT implemented**
 
 - Keystrokes (only mouse usage buttons).
 - Other mathematical functions (`log`, `sin` etc).
 - Explicit scoping `(` and `)`.
+- Google past history selection
 
 ## Modules
 
