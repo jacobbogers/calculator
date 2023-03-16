@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Store } from 'redux';
-import type { MockResponseInit } from 'jest-fetch-mock';
+import type { MockResponseInit } from 'vitest-fetch-mock';
 import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
