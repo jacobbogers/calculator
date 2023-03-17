@@ -1,6 +1,6 @@
 # Migration to Vite of: Calculator front-end "Web"
 
-> For a Functional User manual see (disabled)[here](./).
+> For a Functional User manual see (disabled)[here](../README.md).
 
 This document only covers technical aspects.
 
@@ -46,3 +46,4 @@ There is an nginx template file `nginx.conf.template` using the following enviro
 -   `CALCULATOR_API_HOST`: the hostname of the REST api.
 -   `CALCULATOR_API_PORT`: the port number of the REST api.
 
+[docker-compose]: ../docker-compose.yml
