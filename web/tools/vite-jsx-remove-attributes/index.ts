@@ -1,11 +1,10 @@
 import { createFilter } from '@rollup/pluginutils';
-import { generate } from 'astring';
-import { SourceMapGenerator } from 'source-map';
 import type { Plugin } from 'vite';
-import type { FilterPattern } from '@rollup/pluginutils';
-import type { Node as AcornNode } from 'acorn';
+import type { FilterPattern } from '@rollup/pluginutils'; 
+import type { Node as AcornNode } from 'acorn'; // does not need installing
+import { generate } from 'escodegen'; //needs @types/escodegen
 // @ts-ignore
-import jxpath from '@mangos/jxpath';
+import jxpath from '@mangos/jxpath'; // we need esquery
 
 export interface Options {
     attributes: string[];
@@ -14,7 +13,7 @@ export interface Options {
 }
 
 export default function VitePluginJSXRemoveAttributes({
-    include = [/App\.tsx$/],
+    include = ['**/*.tsx','**/*.jsx'],
     exclude = ['**/node_modules/**'],
     attributes
 }: Options): Plugin {
@@ -65,9 +64,8 @@ export default function VitePluginJSXRemoveAttributes({
                     }
                 }
             }
-            const map = new SourceMapGenerator({ file: id });
-            const formattedCode = generate(ast, { sourceMap: map });
-            return { code: formattedCode, map: map.toString() };
+            const formattedCode = generate(ast);
+            return { code: formattedCode, map: null };
         }
     };
 }
