@@ -17,6 +17,6 @@
         "jsx": "react-jsx"
     },
     "include": ["src"],
-    "files": ["src/main.tsx"],
+    "files": ["src/index.tsx", "./tools/vite-jsx-remove-attributes/index.ts"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }
