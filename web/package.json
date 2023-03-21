@@ -1,17 +1,23 @@
 {
     "name": "calculator-web",
-    "private": true,
     "version": "0.0.0",
+    "private": true,
+    "description": "calculator google app web part",
+    "keywords": [
+        "calculator",
+        "google web calculator"
+    ],
+    "author": "jacob bogers <jkfbogers@gmail.com>",
     "type": "module",
     "scripts": {
-        "dev": "vite",
         "build": "tsc & vite build",
+        "coverage": "vitest run --coverage",
+        "dev": "vite",
+        "lint": "eslint --max-warnings=0 src",
+        "pretty": "prettier . -w",
         "preview": "vite preview",
         "test": "vitest",
-        "testci": "vitest --run",
-        "coverage": "vitest run --coverage",
-        "lint": "eslint --max-warnings=0 src",
-        "pretty": "prettier . -w"
+        "testci": "vitest --run"
     },
     "dependencies": {
         "@redux-devtools/extension": "3.2.5",
@@ -45,5 +51,8 @@
         "vite-plugin-eslint": "1.8.1",
         "vitest": "0.29.3",
         "vitest-fetch-mock": "0.2.2"
+    },
+    "engines": {
+        "node": ">=18.15.0"
     }
 }
