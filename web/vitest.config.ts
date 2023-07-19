@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vitest/config';
+import { defineConfig, configDefaults } from 'vitest/config';
 import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
@@ -17,6 +17,11 @@ export default defineConfig({
         setupFiles: ['./src/setupTests.ts'],
         // you might want to disable it, if you don't have tests that rely on CSS
         // since parsing CSS is slow
-        css: true
+        css: true,
+        exclude: [
+            ...configDefaults.exclude,
+            'e2e/**',
+            'e2e-examples/**',
+        ],
     }
 });
