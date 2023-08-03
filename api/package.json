@@ -54,8 +54,7 @@
         "ts-jest": "29.0.3",
         "tsx": "3.12.3",
         "typescript": "4.4.4",
-        "typescript-eslint-language-service": "4.1.5",
-        "typescript-transform-paths": "3.4.4"
+        "typescript-eslint-language-service": "4.1.5"
     },
     "engines": {
         "node": ">=v18.15.0"
