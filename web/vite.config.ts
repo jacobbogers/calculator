@@ -6,7 +6,7 @@ import removeTestIdAttribute from 'rollup-plugin-jsx-remove-attributes';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    build: { sourcemap: true },
+    build: { sourcemap: true , minify: false },
     plugins: [
         react(),
         removeTestIdAttribute({
@@ -15,10 +15,10 @@ export default defineConfig({
             usage: 'vite'
         }),
         eslint(),
-        svgr({
+        svgr(/*{
             svgrOptions: {
                 // svgr options
             }
-        })
+        }*/)
     ]
 });
