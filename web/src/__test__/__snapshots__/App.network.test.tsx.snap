@@ -14,7 +14,7 @@ exports[`Network fetch > Non http-ok response, it is JSON response, but rejected
 {
   "error": {
     "code": 9400,
-    "message": "Server responded with an error. The response was in json, but unknown format: { \\"hello\\":\\"world\\" }",
+    "message": "Server responded with an error. The response was in json, but unknown format: { "hello":"world" }",
     "reqId": "N/A",
   },
 }
@@ -24,7 +24,7 @@ exports[`Network fetch > http-ok response, but JSONschema rejects response 1`] =
 {
   "error": {
     "code": 9600,
-    "message": "Server responded ok. THe response was in json, but unknown format: { \\"schema\\":\\"reject\\" }",
+    "message": "Server responded ok. THe response was in json, but unknown format: { "schema":"reject" }",
     "reqId": "N/A",
   },
 }

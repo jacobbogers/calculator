@@ -1,7 +1,7 @@
-import type { Middleware, Dispatch, AnyAction } from 'redux';
+import type { Middleware, Dispatch } from 'redux';
 
 import type { CalculatorOperationsActions } from './actions';
-import type { StoreType } from './reducers';
+import type { StoreLayout, StoreType } from './reducers';
 import setupValidation from './validation';
 
 import { isMathOperatorAction, lastIsValidNumberPartial, pruneKeyStrokes, createSyntheticError } from './utils';
@@ -18,7 +18,7 @@ import {
 
 import { API_REST_PATH_SUFFIX, ERR_APP_CALCULATOR_REJECT } from './shared/constants';
 
-function handleErrors(error: ServerResponseError, next: Dispatch, historyExpression: HistoryExpression[]): AnyAction {
+function handleErrors(error: ServerResponseError, next: (action: unknown) => unknown, historyExpression: HistoryExpression[]) {
     const serverErrorAction = createAction('serverError', error);
 
     const errorAction = createAction('error');
@@ -31,14 +31,14 @@ function handleErrors(error: ServerResponseError, next: Dispatch, historyExpress
     return next(errorAction);
 }
 
-export const calculateResultMiddleware: Middleware = ({ getState }: StoreType) => {
+export const calculateResultMiddleware: Middleware<{}, any, Dispatch<{ type: string; payload: unknown }>> = ({ getState }) => {
     const { validateServerSuccess, validateServerError } = setupValidation();
     return (next) => {
-        return async (action: CalculatorOperationsActions) => {
+        return async (action: any) => {
             if (action.type !== 'result') {
                 return next(action);
             }
-            const { commandLine, history } = getState();
+            const { commandLine, history } = getState() as StoreLayout;
             const lastTokenOnCommandLine = commandLine[commandLine.length - 1];
             const lastHistoryExpression = history[history.length - 1];
 

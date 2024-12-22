@@ -1,10 +1,10 @@
-FROM node:18.15.0-alpine as builder
+FROM node:22-alpine AS builder
 WORKDIR /build
 COPY . ./
 RUN npm i
 RUN npm run build
 
-FROM node:18.15.0-alpine as final
+FROM node:22-alpine AS final
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /build/dist ./dist

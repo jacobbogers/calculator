@@ -1,7 +1,6 @@
-import React from 'react';
 import type { Store } from 'redux';
-import type { MockResponseInit } from 'vitest-fetch-mock';
-import { act, cleanup, screen } from '@testing-library/react';
+import type { MockResponse } from 'vitest-fetch-mock';
+import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import createStore from '../lib/store';
@@ -9,6 +8,8 @@ import App from '../App';
 
 import { getUIElements, customRender } from './test-helper';
 import type { StoreLayout } from '../lib/reducers';
+
+const act = (fn:() => void) => fn();
 
 describe('Network fetch', () => {
     let store: Store<StoreLayout>;
@@ -36,14 +37,12 @@ describe('Network fetch', () => {
         expect(lastHistoryLine.textContent).toBe('Ans = 0');
         expect(commandLine.textContent).toBe('4 - .4');
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
-                    headers: {
-                        'content-type': 'text/html'
-                    },
-                    status: 500,
-                    statusText: 'Not Found'
+            return Promise.resolve<MockResponse>({
+                headers: {
+                 'content-type': 'text/html'
                 },
+                status: 500,
+                statusText: 'Not Found',
                 body: '<html><head></head><body>Error</body></head>'
             });
         });
@@ -73,14 +72,14 @@ describe('Network fetch', () => {
         expect(lastHistoryLine.textContent).toBe('Ans = 0');
         expect(commandLine.textContent).toBe('4 - .4');
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+              
                     headers: {
                         'content-type': 'application/json'
                     },
                     status: 400,
-                    statusText: 'Not Found'
-                },
+                    statusText: 'Not Found',
+            
                 body: '{ "hello":"world" }'
             });
         });
@@ -110,14 +109,14 @@ describe('Network fetch', () => {
         expect(lastHistoryLine.textContent).toBe('Ans = 0');
         expect(commandLine.textContent).toBe('4 - .4');
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+              
                     headers: {
                         'content-type': 'text/html'
                     },
                     status: 200,
-                    statusText: 'Ok'
-                },
+                    statusText: 'Ok',
+
                 body: '<html><head></head><body>Welcome to nginx</body></head>'
             });
         });
@@ -147,14 +146,14 @@ describe('Network fetch', () => {
         expect(lastHistoryLine.textContent).toBe('Ans = 0');
         expect(commandLine.textContent).toBe('4 - .4');
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+               
                     headers: {
                         'content-type': 'application/json'
                     },
                     status: 200,
-                    statusText: 'Ok'
-                },
+                    statusText: 'Ok',
+ 
                 body: '{ "schema":"reject" }'
             });
         });

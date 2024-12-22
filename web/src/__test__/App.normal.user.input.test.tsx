@@ -1,7 +1,6 @@
-import React from 'react';
 import type { Store } from 'redux';
-import type { MockResponseInit } from 'vitest-fetch-mock';
-import { cleanup, screen, act } from '@testing-library/react';
+import type { MockResponse } from 'vitest-fetch-mock';
+import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import createStore from '../lib/store';
@@ -11,6 +10,8 @@ import { API_REST_PATH_SUFFIX } from '../lib/shared/constants';
 
 import { getUIElements, customRender } from './test-helper';
 import type { StoreLayout } from '../lib/reducers';
+
+const act = (fn:() => void) => fn();
 
 describe('Normal User input', () => {
     let store: Store<StoreLayout>;
@@ -152,14 +153,14 @@ describe('Normal User input', () => {
         } = getUIElements(screen);
 
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+                
                     headers: {
                         'content-type': 'application/json'
                     },
                     status: 200,
-                    statusText: 'ok'
-                },
+                    statusText: 'ok',
+                
                 body: '{ "type": "value", "payload": "8.100000065610001e-23" }'
             });
         });
@@ -215,14 +216,14 @@ describe('Normal User input', () => {
         expect(commandLine.textContent).toEqual('-92.5 × -.6');
 
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+           
                     headers: {
                         'content-type': 'application/json'
                     },
                     status: 200,
-                    statusText: 'ok'
-                },
+                    statusText: 'ok',
+      
                 body: '{ "type": "value", "payload": "55.5" }'
             });
         });
@@ -261,12 +262,12 @@ describe('Normal User input', () => {
         expect(commandLine.textContent).toBe('9 × 5.2');
 
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+      
                     headers: {
                         'content-type': 'application/json'
-                    }
-                },
+                    },
+            
                 body: JSON.stringify({
                     type: 'value',
                     payload: "46.800000000000004"
@@ -321,12 +322,12 @@ describe('Normal User input', () => {
         expect(commandLine.textContent).toBe('46.8 ÷ .6');
 
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+           
                     headers: {
                         'content-type': 'application/json'
-                    }
-                },
+                    },
+           
                 body: JSON.stringify({
                     type: 'value',
                     payload: "78.00000000000001"
@@ -337,7 +338,7 @@ describe('Normal User input', () => {
         await act(async () => {            
             await user.click(btnSubmit);
         });
-
+        console.log(commandLine.textContent);
         expect(commandLine.textContent).toBe('78');
         expect(lastHistoryLine.textContent).toBe('46.8 ÷ .6 =');
         unmount();

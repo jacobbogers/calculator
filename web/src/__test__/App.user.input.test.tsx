@@ -1,7 +1,6 @@
-import React from 'react';
 import type { Store } from 'redux';
-import type { MockResponseInit } from 'vitest-fetch-mock';
-import { cleanup, screen, act } from '@testing-library/react';
+import type { MockResponse } from 'vitest-fetch-mock';
+import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import createStore from '../lib/store';
@@ -9,6 +8,8 @@ import App from '../App';
 
 import { getUIElements, customRender } from './test-helper';
 import type { StoreLayout } from '../lib/reducers';
+
+const act = (fn:() => void) => fn();
 
 describe('Errors and edge cases/User input', () => {
     let store: Store<StoreLayout>;
@@ -71,11 +72,9 @@ describe('Errors and edge cases/User input', () => {
 
         // set up response
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
-                    headers: {
-                        'content-type': 'application/json'
-                    }
+            return Promise.resolve<MockResponse>({
+                headers: {
+                    'content-type': 'application/json'
                 },
                 body: JSON.stringify({
                     type: 'value',
@@ -100,14 +99,14 @@ describe('Errors and edge cases/User input', () => {
 
         // set up response
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    status: 400,
-                    statusText: 'Bad Request'
+            return Promise.resolve<MockResponse>({
+
+                headers: {
+                    'content-type': 'application/json'
                 },
+                status: 400,
+                statusText: 'Bad Request',
+
                 body: '{ "error": { "code": 1000, "message": "Expression between 1 and 3 yielded a NaN", "reqId": "req-3" }}'
             });
         });
@@ -230,26 +229,26 @@ describe('Errors and edge cases/User input', () => {
         // set up response
         await fetchMock.mockResponses(
             (request: Request) => {
-                return Promise.resolve<MockResponseInit>({
-                    init: {
+                return Promise.resolve<MockResponse>({
+                    
                         headers: {
                             'content-type': 'application/json'
                         },
                         status: 200,
-                        statusText: 'Ok'
-                    },
+                        statusText: 'Ok',
+              
                     body: '{"type":"value","payload":15}'
                 });
             },
             (request: Request) => {
-                return Promise.resolve<MockResponseInit>({
-                    init: {
+                return Promise.resolve<MockResponse>({
+                    
                         headers: {
                             'content-type': 'application/json'
                         },
                         status: 200,
-                        statusText: 'Ok'
-                    },
+                        statusText: 'Ok',
+           
                     body: '{"type":"value","payload":45}'
                 });
             }
@@ -290,37 +289,37 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { lastHistoryLine, commandLine, btn0, btnDivide, btnSubmit } = getUIElements(screen);
-        await act(async () => {
+        // await act(async () => {
             await user.click(btn0);
             await user.click(btnDivide);
             await user.click(btn0);
-        });
+        //});
 
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+                
                     headers: {
                         'content-type': 'application/json'
                     },
                     status: 400,
-                    statusText: 'Bad Request'
-                },
+                    statusText: 'Bad Request',
+               
                 body: '{ "error": { "code": 1000, "message": "Expression between 1 and 3 yielded a NaN", "reqId": "req-3" }}'
             });
         });
-        await act(async () => {
+        // await act(async () => {
             await user.click(btnSubmit);
-        });
+        // });
         expect(lastHistoryLine.textContent).toBe('0 ÷ 0 =');
         expect(commandLine.textContent).toBe('Error');
-        await act(async () => {
+        // await act(async () => {
             await fetchMock.mockClear();
-        });
+        // });
 
         // should not lead to network request
-        await act(async () => {
+        // await act(async () => {
             await user.click(btnSubmit);
-        });
+        //});
         expect(fetchMock.mock.lastCall).toBeUndefined();
 
         expect(lastHistoryLine.textContent).toBe('0 ÷ 0 =');
@@ -338,14 +337,14 @@ describe('Errors and edge cases/User input', () => {
         });
 
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+                
                     headers: {
                         'content-type': 'application/json'
                     },
                     status: 200,
-                    statusText: 'Ok'
-                },
+                    statusText: 'Ok',
+
                 body: '{ "type": "value", "payload": "123345" }'
             });
         });
@@ -369,14 +368,14 @@ describe('Errors and edge cases/User input', () => {
         });
 
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+                
                     headers: {
                         'content-type': 'application/json'
                     },
                     status: 400,
-                    statusText: 'Bad Request'
-                },
+                    statusText: 'Bad Request',
+          
                 body: '{ "error": { "code": 1000, "message": "Expression between 1 and 3 yielded a NaN", "reqId": "req-3" }}'
             });
         });
@@ -410,14 +409,13 @@ describe('Errors and edge cases/User input', () => {
         });
         expect(commandLine.textContent).toBe('.2');
         await fetchMock.mockResponse((request: Request) => {
-            return Promise.resolve<MockResponseInit>({
-                init: {
+            return Promise.resolve<MockResponse>({
+                
                     headers: {
                         'content-type': 'application/json'
                     },
                     status: 400,
-                    statusText: 'Bad Request'
-                },
+                    statusText: 'Bad Request',
                 body: '{ "error": { "code": 1000, "message": "Expression between 1 and 3 yielded a NaN", "reqId": "req-3" }}'
             });
         });
@@ -624,27 +622,27 @@ describe('Errors and edge cases/User input', () => {
         await fetchMock.mockResponses(
             (request: Request) => {
                 // first request: network routing failure
-                return Promise.resolve<MockResponseInit>({
-                    init: {
+                return Promise.resolve<MockResponse>({
+                    
                         headers: {
                             'content-type': 'text/html'
                         },
                         status: 200,
-                        statusText: 'Ok'
-                    },
+                        statusText: 'Ok',
+                 
                     body: '<html><head></head><body>Welcome to nginx</body></head>'
                 });
             },
             // second request: ok
             (request: Request) => {
-                return Promise.resolve<MockResponseInit>({
-                    init: {
+                return Promise.resolve<MockResponse>({
+                    
                         headers: {
                             'content-type': 'application/json'
                         },
                         status: 200,
-                        statusText: 'Ok'
-                    },
+                        statusText: 'Ok',
+              
                     body: '{ "type": "value", "payload": "8" }'
                 });
             }
@@ -697,27 +695,27 @@ describe('Errors and edge cases/User input', () => {
         // nginx configured wrongly, does not hit api
         await fetchMock.mockResponses(
             (request: Request) => {
-                return Promise.resolve<MockResponseInit>({
-                    init: {
+                return Promise.resolve<MockResponse>({
+                    
                         headers: {
                             'content-type': 'application/json'
                         },
                         status: 200,
-                        statusText: 'Ok'
-                    },
+                        statusText: 'Ok',
+                 
                     body: '{ "type": "value", "payload": "8" }'
                 });
             },
             // second request: ok
             (request: Request) => {
-                return Promise.resolve<MockResponseInit>({
-                    init: {
+                return Promise.resolve<MockResponse>({
+                    
                         headers: {
                             'content-type': 'application/json'
                         },
                         status: 200,
-                        statusText: 'Ok'
-                    },
+                        statusText: 'Ok',
+                
                     body: '{ "type": "value", "payload": "8" }'
                 });
             }
@@ -828,26 +826,26 @@ describe('Errors and edge cases/User input', () => {
         // mock 2 different errors
         await fetchMock.mockResponses(
             (request: Request) => {
-                return Promise.resolve<MockResponseInit>({
-                    init: {
+                return Promise.resolve<MockResponse>({
+                    
                         headers: {
                             'content-type': 'text/html'
                         },
                         status: 500,
-                        statusText: 'Not Found'
-                    },
+                        statusText: 'Not Found',
+                 
                     body: '<html><head></head><body>Error</body></head>'
                 });
             },
             (request: Request) => {
-                return Promise.resolve<MockResponseInit>({
-                    init: {
+                return Promise.resolve<MockResponse>({
+                    
                         headers: {
                             'content-type': 'application/json'
                         },
                         status: 400,
-                        statusText: 'Bad Request'
-                    },
+                        statusText: 'Bad Request',
+                
                     body: '{ "error": { "code": 1000, "message": "Expression between 1 and 3 yielded a NaN", "reqId": "req-3" }}'
                 });
             }
