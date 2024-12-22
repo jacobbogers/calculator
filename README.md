@@ -1,5 +1,9 @@
 # Google-like Calculator Project
 
+Some notes:
+- Expressions containing 0/0 (example `3 + 0÷0 + 6`) will produce a NAN and an descriptive error message on where this
+- Expressions that produce Infinity (negative or positive) are still valid expressions
+
 ## The scope of the project is limited to:
 
 ### Use of the mathematical operators:
