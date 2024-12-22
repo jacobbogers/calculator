@@ -19,6 +19,11 @@ type ValueAction = {
     payload: number;
 };
 
+type FinalvalueAction = {
+    type: 'value';
+    payload: string;
+}
+
 type ServerResponseError = {
     error: {
         code: number;
@@ -39,5 +44,6 @@ export type {
     ValueAction,
     ServerResponseError,
     MathOperatorActions,
-    RecordedActionsSansDigit
+    RecordedActionsSansDigit,
+    FinalvalueAction
 };

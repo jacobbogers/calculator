@@ -1,15 +1,9 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig, configDefaults } from 'vitest/config';
-import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
     plugins: [
         react(),
-        svgr({
-            svgrOptions: {
-                // svgr options
-            }
-        })
     ],
     test: {
         globals: true,
@@ -20,8 +14,12 @@ export default defineConfig({
         css: true,
         exclude: [
             ...configDefaults.exclude,
-            'e2e/**',
-            'e2e-examples/**',
         ],
+        include: [
+            'src/__test__/App.network.test.tsx',
+            'src/__test__/App.normal.user.input.test.tsx',
+            'src/__test__/App.ui.test.tsx',
+            'src/__test__/App.user.input.test.tsx'
+        ]
     }
 });

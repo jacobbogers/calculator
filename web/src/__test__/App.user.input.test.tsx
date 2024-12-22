@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Store } from 'redux';
 import type { MockResponseInit } from 'vitest-fetch-mock';
-import { cleanup, screen } from '@testing-library/react';
+import { cleanup, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import createStore from '../lib/store';
@@ -34,8 +34,9 @@ describe('Errors and edge cases/User input', () => {
             const { tainted } = store.getState() as StoreLayout;
             expect(tainted).toBe(false);
         }
-
-        await user.click(btnClearAll);
+        await act(async () => {
+            await user.click(btnClearAll);
+        });
         {
             const { tainted } = store.getState() as StoreLayout;
             expect(tainted).toBe(true);
@@ -58,13 +59,15 @@ describe('Errors and edge cases/User input', () => {
         expect(lastHistoryLine.textContent).toBe('');
         expect(commandLine.textContent).toBe('0');
 
-        await user.click(btn9);
-        await user.click(btnAdd);
-        await user.click(btn4);
-        await user.click(btnDivide);
-        await user.click(btn8);
-        await user.click(btnDot);
-        await user.click(btn2);
+        await act(async () => {
+            await user.click(btn9);
+            await user.click(btnAdd);
+            await user.click(btn4);
+            await user.click(btnDivide);
+            await user.click(btn8);
+            await user.click(btnDot);
+            await user.click(btn2);
+        });
 
         // set up response
         await fetchMock.mockResponse((request: Request) => {
@@ -76,22 +79,24 @@ describe('Errors and edge cases/User input', () => {
                 },
                 body: JSON.stringify({
                     type: 'value',
-                    payload: 9.487804878048781
+                    payload: '9.487804878048781'
                 })
             });
         });
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(lastHistoryLine.textContent).toBe('9 + 4 ÷ 8.2 =');
         expect(commandLine.textContent).toBe('9.487804878');
         expect(store.getState()).toMatchSnapshot();
 
         // history has now state we want
         // submit invalid calculation
-
-        user.click(btn0);
-        user.click(btnDivide);
-        user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+            await user.click(btnDivide);
+            await user.click(btn0);
+        });
 
         // set up response
         await fetchMock.mockResponse((request: Request) => {
@@ -106,19 +111,24 @@ describe('Errors and edge cases/User input', () => {
                 body: '{ "error": { "code": 1000, "message": "Expression between 1 and 3 yielded a NaN", "reqId": "req-3" }}'
             });
         });
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(lastHistoryLine.textContent).toBe('0 ÷ 0 =');
         expect(commandLine.textContent).toBe('Error');
 
         // submit again
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(lastHistoryLine.textContent).toBe('0 ÷ 0 =');
         expect(commandLine.textContent).toBe('Error');
         expect(store.getState().tainted).toBe(false);
 
         // start entering new expression
-        await user.click(btn4);
+        await act(async () => {
+            await user.click(btn4);
+        });
         expect(store.getState().tainted).toBe(true);
 
         // "lastHistoryLine" should now display NOT the last previous calculated result (it was an error)
@@ -134,16 +144,20 @@ describe('Errors and edge cases/User input', () => {
         expect(lastHistoryLine.textContent).toBe('');
         expect(commandLine.textContent).toBe('0');
         //
-        await user.click(btn0);
-        await user.click(btnDivide);
-        await user.click(btn0);
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btn0);
+            await user.click(btnDivide);
+            await user.click(btn0);
+            await user.click(btnSubmit);
+        });
         //
         expect(lastHistoryLine.textContent).toBe('0 ÷ 0 =');
         expect(commandLine.textContent).toBe('Error');
         //
         // start by entering a new expression (not pressing submit)
-        await user.click(btnDivide);
+        await act(async () => {
+            await user.click(btnDivide);
+        });
         expect(commandLine.textContent).toBe('0 ÷');
 
         // there is no previously correctly calculated expression
@@ -157,12 +171,14 @@ describe('Errors and edge cases/User input', () => {
         expect(lastHistoryLine.textContent).toBe('');
         expect(commandLine.textContent).toBe('0');
 
-        await user.click(btn7);
-        await user.click(btnDot);
-        await user.click(btn5);
-        await user.click(btn6);
-        await user.click(btnDot); // user mistake
-        await user.click(btn1);
+        await act(async () => {
+            await user.click(btn7);
+            await user.click(btnDot);
+            await user.click(btn5);
+            await user.click(btn6);
+            await user.click(btnDot); // user mistake
+            await user.click(btn1);
+        });
 
         expect(lastHistoryLine.textContent).toBe('Ans = 0');
         expect(commandLine.textContent).toBe('7.561'); // second dot correctly omitted
@@ -176,21 +192,26 @@ describe('Errors and edge cases/User input', () => {
 
         expect(lastHistoryLine.textContent).toBe('');
         expect(commandLine.textContent).toBe('0');
-
-        await user.click(btn3);
-        await user.click(btnMultiply);
-        await user.click(btn5);
-        await user.click(btnSubtract);
-        await user.click(btn6);
+        await act(async () => {
+            await user.click(btn3);
+            await user.click(btnMultiply);
+            await user.click(btn5);
+            await user.click(btnSubtract);
+            await user.click(btn6);
+        });
 
         // btnClearEntry exist now
         expect(commandLine.textContent).toBe('3 × 5 - 6');
         const btnClearEntry = screen.getByTestId('btnClearEntry');
-        await user.click(btnClearEntry);
+        await act(async () => {
+            await user.click(btnClearEntry);
+        });
         expect(commandLine.textContent).toBe('3 × 5 -');
 
         // submit incomplete expression
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
 
         // nothing happened
         expect(commandLine.textContent).toBe('3 × 5 -');
@@ -200,9 +221,11 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { lastHistoryLine, commandLine, btn3, btn5, btnMultiply, btnSubmit } = getUIElements(screen);
-        await user.click(btn3);
-        await user.click(btnMultiply);
-        await user.click(btn5);
+        await act(async () => {
+            await user.click(btn3);
+            await user.click(btnMultiply);
+            await user.click(btn5);
+        });
 
         // set up response
         await fetchMock.mockResponses(
@@ -231,16 +254,18 @@ describe('Errors and edge cases/User input', () => {
                 });
             }
         );
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
 
         expect(store.getState().tainted).toBe(false);
         expect(lastHistoryLine.textContent).toBe('3 × 5 =');
         expect(commandLine.textContent).toBe('15');
 
         fetchMock.mockClear();
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(store.getState().tainted).toBe(false);
         expect(lastHistoryLine.textContent).toBe('3 × 5 =');
         expect(commandLine.textContent).toBe('15');
@@ -249,9 +274,11 @@ describe('Errors and edge cases/User input', () => {
         expect(fetchMock.mock.lastCall).toBeUndefined();
 
         // continue with 15 x 5 = 45
-        await user.click(btnMultiply);
-        await user.click(btn5);
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnMultiply);
+            await user.click(btn5);
+            await user.click(btnSubmit);
+        });
 
         // network call was made
         expect(fetchMock.mock.lastCall).not.toBeUndefined();
@@ -263,9 +290,11 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { lastHistoryLine, commandLine, btn0, btnDivide, btnSubmit } = getUIElements(screen);
-        await user.click(btn0);
-        await user.click(btnDivide);
-        await user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+            await user.click(btnDivide);
+            await user.click(btn0);
+        });
 
         await fetchMock.mockResponse((request: Request) => {
             return Promise.resolve<MockResponseInit>({
@@ -279,15 +308,19 @@ describe('Errors and edge cases/User input', () => {
                 body: '{ "error": { "code": 1000, "message": "Expression between 1 and 3 yielded a NaN", "reqId": "req-3" }}'
             });
         });
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(lastHistoryLine.textContent).toBe('0 ÷ 0 =');
         expect(commandLine.textContent).toBe('Error');
-
-        await fetchMock.mockClear();
+        await act(async () => {
+            await fetchMock.mockClear();
+        });
 
         // should not lead to network request
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(fetchMock.mock.lastCall).toBeUndefined();
 
         expect(lastHistoryLine.textContent).toBe('0 ÷ 0 =');
@@ -298,9 +331,11 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btn4, btnSubtract, btnDot, btnSubmit } = getUIElements(screen);
-        await user.click(btn4);
-        await user.click(btnSubtract);
-        await user.click(btnDot);
+        await act(async () => {
+            await user.click(btn4);
+            await user.click(btnSubtract);
+            await user.click(btnDot);
+        });
 
         await fetchMock.mockResponse((request: Request) => {
             return Promise.resolve<MockResponseInit>({
@@ -311,11 +346,12 @@ describe('Errors and edge cases/User input', () => {
                     status: 200,
                     statusText: 'Ok'
                 },
-                body: '{ "type": "value", payload: 123345 }'
+                body: '{ "type": "value", "payload": "123345" }'
             });
         });
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         const { tainted } = store.getState();
         expect(tainted).toBe(true);
         expect(commandLine.textContent).toBe('4 - .');
@@ -326,9 +362,11 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btn0, btnDivide, btnSubmit, btnSubtract } = getUIElements(screen);
-        await user.click(btn0);
-        await user.click(btnDivide);
-        await user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+            await user.click(btnDivide);
+            await user.click(btn0);
+        });
 
         await fetchMock.mockResponse((request: Request) => {
             return Promise.resolve<MockResponseInit>({
@@ -342,14 +380,17 @@ describe('Errors and edge cases/User input', () => {
                 body: '{ "error": { "code": 1000, "message": "Expression between 1 and 3 yielded a NaN", "reqId": "req-3" }}'
             });
         });
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         {
             const { tainted } = store.getState();
             expect(tainted).toBe(false);
         }
         expect(commandLine.textContent).toBe('Error');
-        await user.click(btnSubtract);
+        await act(async () => {
+            await user.click(btnSubtract);
+        });
         expect(commandLine.textContent).toBe('-');
         {
             const { tainted } = store.getState();
@@ -362,9 +403,11 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btn2, btnDot, btnSubtract, btnSubmit } = getUIElements(screen);
-        await user.click(btnDot);
-        await user.click(btnSubtract);
-        await user.click(btn2);
+        await act(async () => {
+            await user.click(btnDot);
+            await user.click(btnSubtract);
+            await user.click(btn2);
+        });
         expect(commandLine.textContent).toBe('.2');
         await fetchMock.mockResponse((request: Request) => {
             return Promise.resolve<MockResponseInit>({
@@ -378,8 +421,9 @@ describe('Errors and edge cases/User input', () => {
                 body: '{ "error": { "code": 1000, "message": "Expression between 1 and 3 yielded a NaN", "reqId": "req-3" }}'
             });
         });
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toBe('0.2');
         unmount();
     });
@@ -388,8 +432,10 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btnSubtract } = getUIElements(screen);
-        await user.click(btnSubtract);
-        await user.click(btnSubtract);
+        await act(async () => {
+            await user.click(btnSubtract);
+            await user.click(btnSubtract);
+        });
         expect(commandLine.textContent).toBe('-'); // only once "-"
         unmount();
     });
@@ -397,10 +443,14 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btnSubtract, btn3, btnAdd } = getUIElements(screen);
-        await user.click(btn3);
-        await user.click(btnAdd);
+        await act(async () => {
+            await user.click(btn3);
+            await user.click(btnAdd);
+        });
         expect(commandLine.textContent).toBe('3 +');
-        await user.click(btnSubtract);
+        await act(async () => {
+            await user.click(btnSubtract);
+        });
         expect(commandLine.textContent).toBe('3 -');
         unmount();
     });
@@ -408,10 +458,14 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btn3, btnMultiply, btnDivide } = getUIElements(screen);
-        await user.click(btn3);
-        await user.click(btnMultiply);
+        await act(async () => {
+            await user.click(btn3);
+            await user.click(btnMultiply);
+        });
         expect(commandLine.textContent).toBe('3 ×');
-        await user.click(btnDivide);
+        await act(async () => {
+            await user.click(btnDivide);
+        });
         expect(commandLine.textContent).toBe('3 ÷');
         unmount();
     });
@@ -419,10 +473,14 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btn3, btnMultiply, btnAdd } = getUIElements(screen);
-        await user.click(btn3);
-        await user.click(btnMultiply);
+        await act(async () => {
+            await user.click(btn3);
+            await user.click(btnMultiply);
+        });
         expect(commandLine.textContent).toBe('3 ×');
-        await user.click(btnAdd);
+        await act(async () => {
+            await user.click(btnAdd);
+        });
         expect(commandLine.textContent).toBe('3 +');
         unmount();
     });
@@ -430,17 +488,27 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btn3, btnDot, btnAdd, btnMultiply, btnDivide, btnSubtract } = getUIElements(screen);
-        await user.click(btn3);
-        await user.click(btnAdd);
-        await user.click(btnDot);
+        await act(async () => {
+            await user.click(btn3);
+            await user.click(btnAdd);
+            await user.click(btnDot);
+        });
         expect(commandLine.textContent).toBe('3 + .');
-        await user.click(btnAdd);
+        await act(async () => {
+            await user.click(btnAdd);
+        });
         expect(commandLine.textContent).toBe('3 + .');
-        await user.click(btnMultiply);
+        await act(async () => {
+            await user.click(btnMultiply);
+        });
         expect(commandLine.textContent).toBe('3 + .');
-        await user.click(btnDivide);
+        await act(async () => {
+            await user.click(btnDivide);
+        });
         expect(commandLine.textContent).toBe('3 + .');
-        await user.click(btnSubtract);
+        await act(async () => {
+            await user.click(btnSubtract);
+        });
         expect(commandLine.textContent).toBe('3 + .');
         unmount();
     });
@@ -448,9 +516,13 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btn0 } = getUIElements(screen);
-        await user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+        });
         expect(commandLine.textContent).toBe('0');
-        await user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+        });
         expect(commandLine.textContent).toBe('0'); // no 2x "0"
         unmount();
     });
@@ -458,15 +530,25 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btn0, btnDot, btnMultiply } = getUIElements(screen);
-        await user.click(btnMultiply);
+        await act(async () => {
+            await user.click(btnMultiply);
+        });
         expect(commandLine.textContent).toBe('0 ×');
-        await user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+        });
         expect(commandLine.textContent).toBe('0 × 0');
-        await user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+        });
         expect(commandLine.textContent).toBe('0 × 0'); // zero not added
-        await user.click(btnDot);
+        await act(async () => {
+            await user.click(btnDot);
+        });
         expect(commandLine.textContent).toBe('0 × 0.');
-        await user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+        });
         expect(commandLine.textContent).toBe('0 × 0.0'); // zero is added because of "."
         unmount();
     });
@@ -474,15 +556,25 @@ describe('Errors and edge cases/User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { commandLine, btn0, btnDot, btnMultiply } = getUIElements(screen);
-        await user.click(btnMultiply);
+        await act(async () => {
+            await user.click(btnMultiply);
+        });
         expect(commandLine.textContent).toBe('0 ×');
-        await user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+        });
         expect(commandLine.textContent).toBe('0 × 0');
-        await user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+        });
         expect(commandLine.textContent).toBe('0 × 0'); // zero not added
-        await user.click(btnDot);
+        await act(async () => {
+            await user.click(btnDot);
+        });
         expect(commandLine.textContent).toBe('0 × 0.');
-        await user.click(btn0);
+        await act(async () => {
+            await user.click(btn0);
+        });
         expect(commandLine.textContent).toBe('0 × 0.0'); // zero is added because of "."
         unmount();
     });
@@ -492,18 +584,26 @@ describe('Errors and edge cases/User input', () => {
         const { commandLine, btnMultiply } = getUIElements(screen);
         expect(() => screen.getByTestId('btnClearEntry')).toThrowError();
         // taint the command line
-        await user.click(btnMultiply);
+        await act(async () => {
+            await user.click(btnMultiply);
+        });
         expect(commandLine.textContent).toBe('0 ×');
         // CE now exist
         const btnCE = screen.getByTestId('btnClearEntry');
-        await user.click(btnCE);
+        await act(async () => {
+            await user.click(btnCE);
+        });
         expect(commandLine.textContent).toBe('0');
         expect(store.getState().commandLine).toEqual([{ type: 'digit', payload: '0' }]);
-        await user.click(btnCE);
+        await act(async () => {
+            await user.click(btnCE);
+        });
         expect(commandLine.textContent).toBe('0'); // just visual entry for human, nothing on command-line
         expect(store.getState().commandLine).toEqual([]);
         // empty stack press again CE
-        await user.click(btnCE);
+        await act(async () => {
+            await user.click(btnCE);
+        });
         expect(commandLine.textContent).toBe('0');
         expect(store.getState().commandLine).toEqual([]);
         unmount();
@@ -514,9 +614,11 @@ describe('Errors and edge cases/User input', () => {
         const { commandLine, btn2, btn4, btnMultiply, btnSubmit } = getUIElements(screen);
 
         // first attempt
-        await user.click(btn2);
-        await user.click(btnMultiply);
-        await user.click(btn4);
+        await act(async () => {
+            await user.click(btn2);
+            await user.click(btnMultiply);
+            await user.click(btn4);
+        });
 
         // nginx configured wrongly, does not hit api
         await fetchMock.mockResponses(
@@ -543,12 +645,13 @@ describe('Errors and edge cases/User input', () => {
                         status: 200,
                         statusText: 'Ok'
                     },
-                    body: '{ "type": "value", "payload": 8 }'
+                    body: '{ "type": "value", "payload": "8" }'
                 });
             }
         );
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toBe('Error');
 
         // history stack should look like this
@@ -573,7 +676,9 @@ describe('Errors and edge cases/User input', () => {
             }
         ]);
         // now click submit again, the network issue has been resolved
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toBe('8');
         unmount();
     });
@@ -583,9 +688,11 @@ describe('Errors and edge cases/User input', () => {
         const { btn2, btn4, btnMultiply, btnSubmit } = getUIElements(screen);
 
         // first attempt
-        await user.click(btn2);
-        await user.click(btnMultiply);
-        await user.click(btn4);
+        await act(async () => {
+            await user.click(btn2);
+            await user.click(btnMultiply);
+            await user.click(btn4);
+        });
 
         // nginx configured wrongly, does not hit api
         await fetchMock.mockResponses(
@@ -598,7 +705,7 @@ describe('Errors and edge cases/User input', () => {
                         status: 200,
                         statusText: 'Ok'
                     },
-                    body: '{ "type": "value", "payload": 8 }'
+                    body: '{ "type": "value", "payload": "8" }'
                 });
             },
             // second request: ok
@@ -611,12 +718,13 @@ describe('Errors and edge cases/User input', () => {
                         status: 200,
                         statusText: 'Ok'
                     },
-                    body: '{ "type": "value", "payload": 8 }'
+                    body: '{ "type": "value", "payload": "8" }'
                 });
             }
         );
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         // check result #1
         {
             const { commandLine, changeOnReadyOrError, history } = store.getState();
@@ -644,8 +752,9 @@ describe('Errors and edge cases/User input', () => {
                 }
             ]);
         }
-
-        await user.click(btnSubmit); // no network request
+        await act(async () => {
+            await user.click(btnSubmit); // no network request
+        });
         // check result #2
         {
             const { commandLine, changeOnReadyOrError, history } = store.getState();
@@ -675,11 +784,13 @@ describe('Errors and edge cases/User input', () => {
         }
 
         // enter the exact same calculations again
-        await user.click(btn2);
-        await user.click(btnMultiply);
-        await user.click(btn4);
+        await act(async () => {
+            await user.click(btn2);
+            await user.click(btnMultiply);
+            await user.click(btn4);
 
-        await user.click(btnSubmit); // 2nd network request made
+            await user.click(btnSubmit); // 2nd network request made
+        });
         // check result #3
         {
             const { commandLine, changeOnReadyOrError, history } = store.getState();
@@ -743,10 +854,12 @@ describe('Errors and edge cases/User input', () => {
         );
 
         // first attempt
-        await user.click(btn2);
-        await user.click(btnMultiply);
-        await user.click(btn4);
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btn2);
+            await user.click(btnMultiply);
+            await user.click(btn4);
+            await user.click(btnSubmit);
+        });
         // check #1
         {
             const { serverError, history } = store.getState();
@@ -781,7 +894,9 @@ describe('Errors and edge cases/User input', () => {
             ]);
         }
         // 2nd attempt (will perform network call since it was not an API_REJECT error)
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         // check #1
         {
             const { serverError, history } = store.getState();

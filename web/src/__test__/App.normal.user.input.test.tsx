@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Store } from 'redux';
 import type { MockResponseInit } from 'vitest-fetch-mock';
-import { cleanup, screen } from '@testing-library/react';
+import { cleanup, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import createStore from '../lib/store';
@@ -28,11 +28,17 @@ describe('Normal User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { btn0, btn1, commandLine, btnSubmit } = getUIElements(screen);
-        await user.click(btn1);
+        await act(async () => {
+            await user.click(btn1);
+        });
         for (let i = 0; i < 12; i++) {
-            await user.click(btn0);
+            await act(async () => {
+                await user.click(btn0);
+            });
         }
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toBe('1e+12');
         unmount();
     });
@@ -40,14 +46,16 @@ describe('Normal User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { btn0, btn1, btn9, btn4, btn3, commandLine, btnSubmit } = getUIElements(screen);
-        await user.click(btn1);
-        await user.click(btn9);
-        await user.click(btn4);
-        await user.click(btn3);
-        for (let i = 0; i < 9; i++) {
-            await user.click(btn0);
-        }
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btn1);
+            await user.click(btn9);
+            await user.click(btn4);
+            await user.click(btn3);
+            for (let i = 0; i < 9; i++) {
+                await user.click(btn0);
+            }
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toBe('1.943e+12');
         unmount();
     });
@@ -55,16 +63,18 @@ describe('Normal User input', () => {
         const { unmount } = customRender(<App />, store);
         const user = userEvent.setup({ delay: 0.4 });
         const { btn0, btn1, btn2, btn3, btn4, btn5, btn6, commandLine, btnSubmit } = getUIElements(screen);
-        await user.click(btn1);
-        await user.click(btn2);
-        await user.click(btn3);
-        await user.click(btn4);
-        await user.click(btn5);
-        await user.click(btn6);
-        for (let i = 0; i < 6; i++) {
-            await user.click(btn0);
-        }
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btn1);
+            await user.click(btn2);
+            await user.click(btn3);
+            await user.click(btn4);
+            await user.click(btn5);
+            await user.click(btn6);
+            for (let i = 0; i < 6; i++) {
+                await user.click(btn0);
+            }
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toBe('123456000000');
         unmount();
     });
@@ -73,19 +83,21 @@ describe('Normal User input', () => {
         const user = userEvent.setup({ delay: 0.4 });
         const { btnDot, btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn9, commandLine, btnSubmit } =
             getUIElements(screen);
-        await user.click(btn0);
-        await user.click(btnDot);
-        await user.click(btn1);
-        await user.click(btn2);
-        await user.click(btn3);
-        await user.click(btn4);
-        await user.click(btn5);
-        await user.click(btn6);
-        for (let i = 0; i < 3; i++) {
+        await act(async () => {
             await user.click(btn0);
-        }
-        await user.click(btn9);
-        await user.click(btnSubmit);
+            await user.click(btnDot);
+            await user.click(btn1);
+            await user.click(btn2);
+            await user.click(btn3);
+            await user.click(btn4);
+            await user.click(btn5);
+            await user.click(btn6);
+            for (let i = 0; i < 3; i++) {
+                await user.click(btn0);
+            }
+            await user.click(btn9);
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toBe('0.123456001');
         unmount();
     });
@@ -94,26 +106,28 @@ describe('Normal User input', () => {
         const user = userEvent.setup({ delay: 0.4 });
         const { btnDot, btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, commandLine, btnSubmit } =
             getUIElements(screen);
-        await user.click(btn1);
-        //
-        await user.click(btn1);
-        await user.click(btn2);
-        await user.click(btn3);
-        //
-        await user.click(btn4);
-        await user.click(btn5);
-        await user.click(btn6);
-        //
-        await user.click(btn7);
-        await user.click(btn8);
-        await user.click(btn9);
-        //
-        await user.click(btnDot);
-        for (let i = 0; i < 3; i++) {
-            await user.click(btn0);
-        }
-        await user.click(btn9);
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btn1);
+            //
+            await user.click(btn1);
+            await user.click(btn2);
+            await user.click(btn3);
+            //
+            await user.click(btn4);
+            await user.click(btn5);
+            await user.click(btn6);
+            //
+            await user.click(btn7);
+            await user.click(btn8);
+            await user.click(btn9);
+            //
+            await user.click(btnDot);
+            for (let i = 0; i < 3; i++) {
+                await user.click(btn0);
+            }
+            await user.click(btn9);
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toBe('1123456789');
         unmount();
     });
@@ -146,32 +160,33 @@ describe('Normal User input', () => {
                     status: 200,
                     statusText: 'ok'
                 },
-                body: '{ "type": "value", "payload": 8.100000065610001e-23 }'
+                body: '{ "type": "value", "payload": "8.100000065610001e-23" }'
             });
         });
-
-        await user.click(btnDot);
-        for (let i = 0; i < 4; i++) {
-            await user.click(btn0);
-        }
-        await user.click(btn1);
-        // entered .0001
-        await user.click(btnDivide);
-        //
-        for (let i = 0; i < 2; i++) {
+        await act(async () => {
+            await user.click(btnDot);
+            for (let i = 0; i < 4; i++) {
+                await user.click(btn0);
+            }
             await user.click(btn1);
-            await user.click(btn2);
-            await user.click(btn3);
+            // entered .0001
+            await user.click(btnDivide);
             //
-            await user.click(btn4);
-            await user.click(btn5);
-            await user.click(btn6);
-            //
-            await user.click(btn7);
-            await user.click(btn8);
-            await user.click(btn9);
-        }
-        await user.click(btnSubmit);
+            for (let i = 0; i < 2; i++) {
+                await user.click(btn1);
+                await user.click(btn2);
+                await user.click(btn3);
+                //
+                await user.click(btn4);
+                await user.click(btn5);
+                await user.click(btn6);
+                //
+                await user.click(btn7);
+                await user.click(btn8);
+                await user.click(btn9);
+            }
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toBe('8.1000001e-23');
         const { commandLine: cmdLineStore } = store.getState();
         expect(cmdLineStore).toEqual([{ type: 'value', payload: 8.100000065610001e-23 }]);
@@ -185,15 +200,17 @@ describe('Normal User input', () => {
             getUIElements(screen);
 
         // -92.5x-.6 =
-        await user.click(btnSubtract);
-        await user.click(btn9);
-        await user.click(btn2);
-        await user.click(btnDot);
-        await user.click(btn5);
-        await user.click(btnMultiply);
-        await user.click(btnSubtract);
-        await user.click(btnDot);
-        await user.click(btn6);
+        await act(async () => {
+            await user.click(btnSubtract);
+            await user.click(btn9);
+            await user.click(btn2);
+            await user.click(btnDot);
+            await user.click(btn5);
+            await user.click(btnMultiply);
+            await user.click(btnSubtract);
+            await user.click(btnDot);
+            await user.click(btn6);
+        });
 
         expect(commandLine.textContent).toEqual('-92.5 × -.6');
 
@@ -206,11 +223,12 @@ describe('Normal User input', () => {
                     status: 200,
                     statusText: 'ok'
                 },
-                body: '{ "type": "value", "payload": 55.5 }'
+                body: '{ "type": "value", "payload": "55.5" }'
             });
         });
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toEqual('55.5');
         unmount();
     });
@@ -225,15 +243,19 @@ describe('Normal User input', () => {
         expect(lastHistoryLine.textContent).toBe('');
 
         // first key press
-        await user.click(btn9);
+        await act(async () => {
+            await user.click(btn9);
+        });
 
         // after the first keypress the historyLine is now "Ans =  0"
         expect(lastHistoryLine.textContent).toBe('Ans = 0');
 
-        await user.click(btnMultiply);
-        await user.click(btn5);
-        await user.click(btnDot);
-        await user.click(btn2);
+        await act(async () => {
+            await user.click(btnMultiply);
+            await user.click(btn5);
+            await user.click(btnDot);
+            await user.click(btn2);
+        });
 
         expect(store.getState()).toMatchSnapshot();
         expect(commandLine.textContent).toBe('9 × 5.2');
@@ -247,12 +269,13 @@ describe('Normal User input', () => {
                 },
                 body: JSON.stringify({
                     type: 'value',
-                    payload: 46.800000000000004
+                    payload: "46.800000000000004"
                 })
             });
         });
-
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(fetchMock.mock.lastCall).toEqual([
             API_REST_PATH_SUFFIX,
             {
@@ -282,14 +305,18 @@ describe('Normal User input', () => {
         screen.getByTestId('btnClearAll');
 
         // user clicks = for second time
-        await user.click(btnSubmit);
+        await act(async () => {
+            await user.click(btnSubmit);
+        });
         expect(commandLine.textContent).toBe('46.8');
         expect(lastHistoryLine.textContent).toBe('9 × 5.2 =');
 
         // continue with calculation using returned result
-        await user.click(btnDivide);
-        await user.click(btnDot);
-        await user.click(btn6);
+        await act(async () => {
+            await user.click(btnDivide);
+            await user.click(btnDot);
+            await user.click(btn6);
+        });
         expect(store.getState()).toMatchSnapshot();
         expect(commandLine.textContent).toBe('46.8 ÷ .6');
 
@@ -302,12 +329,14 @@ describe('Normal User input', () => {
                 },
                 body: JSON.stringify({
                     type: 'value',
-                    payload: 78.00000000000001
+                    payload: "78.00000000000001"
                 })
             });
         });
 
-        await user.click(btnSubmit);
+        await act(async () => {            
+            await user.click(btnSubmit);
+        });
 
         expect(commandLine.textContent).toBe('78');
         expect(lastHistoryLine.textContent).toBe('46.8 ÷ .6 =');

@@ -6,7 +6,7 @@ import setupValidation from './validation';
 
 import { isMathOperatorAction, lastIsValidNumberPartial, pruneKeyStrokes, createSyntheticError } from './utils';
 import { createAction, HistoryEntry, HistoryExpression } from './actions';
-import { ValueAction, ServerResponseError } from './shared/types';
+import { ValueAction, ServerResponseError, FinalvalueAction } from './shared/types';
 import {
     MIME_APPLICATION_JSON,
     ERR_RESPONSE_ERR_NO_JSON,
@@ -133,7 +133,11 @@ export const calculateResultMiddleware: Middleware = ({ getState }: StoreType) =
             const responseBackup = response.clone();
             let replyAsJson: ValueAction;
             try {
-                replyAsJson = await response.json();
+                const finalValueAction: FinalvalueAction = await response.json();
+                replyAsJson = {
+                    ...finalValueAction,
+                    payload: parseFloat(finalValueAction.payload)
+                };
             } catch (err) {
                 const text = await responseBackup.text();
                 const error = createSyntheticError(ERR_RESPONSE_OK_NO_JSON, getErr(ERR_RESPONSE_OK_NO_JSON, text));
