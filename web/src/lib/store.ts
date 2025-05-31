@@ -1,10 +1,12 @@
-import { createStore, applyMiddleware } from 'redux';
-import type { Store } from 'redux';
-
+import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './reducers';
 import { calculateResultMiddleware } from './middlewares';
-import { composeWithDevTools } from '@redux-devtools/extension';
 
-export default function createStoreFn(): Store {
-    return createStore(rootReducer, composeWithDevTools(applyMiddleware(calculateResultMiddleware)));
+export default function createStoreFn() {
+    return configureStore({
+        reducer: rootReducer,
+        middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware().concat(calculateResultMiddleware),
+        devTools: true, // optional; enables Redux DevTools in dev
+    });
 }

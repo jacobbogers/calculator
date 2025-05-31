@@ -216,7 +216,7 @@ export function reduceChangeOnReadyOrError(state = 0, action: ErrorAction | Resu
     return state;
 }
 
-const rootReducer = combineReducers<StoreLayout>({
+const rootReducer = combineReducers({
     tainted: reduceTainted,
     commandLine: reduceCommandLine,
     history: reduceHistory,
