@@ -1,6 +1,5 @@
 import type { FastifyInstance, FastifyError } from "fastify";
 import StatusCodes from "http-status-codes";
-import { fastifyRawBody } from "fastify-raw-body";
 
 import calculatorRoute from "./route";
 import {
@@ -16,15 +15,15 @@ declare module "fastify" {
 }
 
 export default async function setup(
-  parent: FastifyInstance
+  parent: FastifyInstance,
 ): Promise<FastifyInstance> {
-  await parent.register(async function (instance: FastifyInstance) {
-    await instance.register(fastifyRawBody, {
+  parent.register(async function (instance: FastifyInstance) {
+    /*await instance.register(fastifyRawBody, {
       field: "rawBody",
       global: false,
       encoding: "utf8",
       runFirst: true,
-    });
+    });*/
 
     instance.addSchema(calculatorRequest);
     instance.addSchema(calculatorResponse);
@@ -39,13 +38,8 @@ export default async function setup(
         serialization?: { url: string; method: string };
       },
       req,
-      reply
+      reply,
     ) {
-      this.log.trace(
-        "rawHeaders: [%o], body:[%o]",
-        req.raw.rawHeaders,
-        req.rawBody
-      );
       const reqId = String(req.id);
       if (
         Array.isArray(error.validation) &&
@@ -80,7 +74,7 @@ export default async function setup(
         "err: [%s], from: [%s], url:[%s]",
         StatusCodes.INTERNAL_SERVER_ERROR,
         req.socket.remoteAddress,
-        req.url
+        req.url,
       );
       this.log.error("err: [%s], stacktrace: [%s]", error.message, error.stack);
     });

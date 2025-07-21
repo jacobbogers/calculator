@@ -26,7 +26,7 @@ export type ExpressionContext = {
 
 export default function evaluateExpression(
   data: RecordedActionsSansDigit[],
-  ctx: ExpressionContext
+  ctx: ExpressionContext,
 ): number {
   // start of context so there must be at least something on data[position]
   const leftToken = data[ctx.position];

@@ -10,7 +10,7 @@ interface CallBack {
 
 export default function setup(
   options: FastifyServerOptions,
-  afterAllIsRegistered: CallBack
+  afterAllIsRegistered: CallBack,
 ): FastifyInstance {
   const root = fastify(options);
 

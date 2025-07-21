@@ -9,7 +9,7 @@ import permanentOverrides from "./permanent-overrides";
 
 const options: FastifyServerOptions = {
   logger: {
-    level: "debug",
+    level: "trace",
   },
   ...permanentOverrides,
 };
@@ -18,6 +18,7 @@ queueMicrotask(function init() {
   setupServer(options, (root: FastifyInstance) => {
     const allRoutes = root.printRoutes({ commonPrefix: false });
     root.log.debug(allRoutes);
+
     root.listen(
       {
         port: isFinite(PORT) ? PORT : FALLBACK_PORT,
@@ -33,7 +34,7 @@ queueMicrotask(function init() {
           process.exit(1);
         }
         root.log.info(`Listening on port: ${address}`);
-      }
+      },
     );
   });
 });
@@ -43,7 +44,7 @@ process.on("unhandledRejection", (reason, promise) => {
   console.error(
     `[${date}]: Unhandled Rejection at:`,
     promise,
-    `reason: ${String(reason)}`
+    `reason: ${String(reason)}`,
   );
   // above is always a sync write to files and pipes, but not to tty
   process.exit(1);
@@ -53,8 +54,8 @@ process.on("uncaughtException", (err, origin) => {
   const date = new Date().toISOString();
   console.error(
     `\n[${date}] UncaughtExcpetion error(1): ${String(
-      err.stack
-    )}\n[${date}]: UncaughtExcpetion error(1) at: ${origin}\n`
+      err.stack,
+    )}\n[${date}]: UncaughtExcpetion error(1) at: ${origin}\n`,
   );
   // above is always a sync write to files and pipes, but not to tty
   process.exit(1);

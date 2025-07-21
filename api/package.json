@@ -15,8 +15,8 @@
     "main": "dist/app.mjs",
     "types": "dist/types/index.d.ts",
     "scripts": {
-        "build": "node --trace-warnings scripts/build.mjs",
-        "dev": "tsx watch src/boot.ts",
+        "build": "node scripts/build.mjs",
+        "dev": "tsx src/boot.ts",
         "dev-nowatch": "tsx src/boot.ts",
         "lint": "eslint .eslintrc.cjs jest.config.cjs scripts/*.mjs src/**/*.ts",
         "start": "node dist/boot.mjs",
@@ -32,7 +32,6 @@
     },
     "dependencies": {
         "fastify": "4.14.1",
-        "fastify-raw-body": "4.2.0",
         "http-status-codes": "2.2.0"
     },
     "devDependencies": {

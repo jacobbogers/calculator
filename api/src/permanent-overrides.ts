@@ -1,6 +1,6 @@
 import type { FastifyServerOptions } from "fastify";
 
-// so "oneOf" in JSONSchema works
+// default options dont work with  "oneOf" in JSONSchema works
 const fastifyOverrides: FastifyServerOptions = {
   ajv: {
     customOptions: {

@@ -11,7 +11,7 @@ describe("calculator unit test", () => {
           { type: "multiply" },
           { type: "value", payload: 0.2 },
         ],
-        ctx
+        ctx,
       );
       expect(result).toBe(1.2000000000000002);
     });
@@ -27,7 +27,7 @@ describe("calculator unit test", () => {
           { type: "multiply" },
           { type: "value", payload: 11 },
         ],
-        ctx
+        ctx,
       );
       expect(result).toBe(42);
       expect(ctx).toEqual({ position: 6, rank: 0 });
@@ -36,7 +36,7 @@ describe("calculator unit test", () => {
       const ctx: ExpressionContext = { rank: 0, position: 0 };
       const result = evaluateExpression(
         [{ type: "value", payload: 1.42334e-23 }],
-        ctx
+        ctx,
       );
       expect(result).toBe(1.42334e-23);
       expect(ctx).toEqual({ position: 0, rank: 0 });
@@ -45,7 +45,7 @@ describe("calculator unit test", () => {
       const ctx: ExpressionContext = { rank: 0, position: 0 };
       const result = evaluateExpression(
         [{ type: "value", payload: 1.42334e-23 }],
-        ctx
+        ctx,
       );
       expect(result).toBe(1.42334e-23);
       expect(ctx).toEqual({ position: 0, rank: 0 });
@@ -68,7 +68,7 @@ describe("calculator unit test", () => {
           { type: "add" },
           { type: "value", payload: 18 },
         ],
-        ctx
+        ctx,
       );
       expect(result).toBe(100000030.5);
       expect(ctx).toEqual({ position: 12, rank: 0 });
@@ -101,7 +101,7 @@ describe("calculator unit test", () => {
       const ctx: ExpressionContext = { rank: 0, position: 0 };
       const result = evaluateExpression(
         [{ type: "value", payload: 4 }, { type: "multiply" }],
-        ctx
+        ctx,
       );
       expect(ctx).toEqual({
         failureAt: 1,
@@ -118,7 +118,7 @@ describe("calculator unit test", () => {
           { type: "value", payload: 4 },
           { type: "value", payload: 6 },
         ],
-        ctx
+        ctx,
       );
       expect(ctx).toEqual({
         failureAt: 1,
@@ -137,7 +137,7 @@ describe("calculator unit test", () => {
           { type: "value", payload: 6 },
           { type: "add" },
         ],
-        ctx
+        ctx,
       );
       expect(ctx).toEqual({
         failureAt: 3,
@@ -151,7 +151,7 @@ describe("calculator unit test", () => {
       const ctx: ExpressionContext = { rank: 0, position: 0 };
       const result = evaluateExpression(
         [{ type: "multiply" }, { type: "value", payload: 4 }],
-        ctx
+        ctx,
       );
       expect(ctx).toEqual({
         failureAt: 0,
@@ -171,7 +171,7 @@ describe("calculator unit test", () => {
           { type: "subtract" },
           { type: "value", payload: Infinity },
         ],
-        ctx
+        ctx,
       );
       expect(result).toBe(-Infinity);
       expect(ctx).toEqual({ position: 4, rank: 0 });
@@ -185,7 +185,7 @@ describe("calculator unit test", () => {
             { type: "divide" },
             { type: "value", payload: 0 },
           ],
-          ctx
+          ctx,
         );
         expect(result).toBe(Infinity);
         expect(ctx).toEqual({ position: 2, rank: 0 });
@@ -198,7 +198,7 @@ describe("calculator unit test", () => {
             { type: "divide" },
             { type: "value", payload: 0 },
           ],
-          ctx
+          ctx,
         );
         expect(result).toBe(-Infinity);
         expect(ctx).toEqual({ position: 2, rank: 0 });
@@ -212,7 +212,7 @@ describe("calculator unit test", () => {
           { type: "divide" },
           { type: "value", payload: 0 },
         ],
-        ctx
+        ctx,
       );
       expect(result).toBeNaN();
       expect(ctx).toEqual({
@@ -236,7 +236,7 @@ describe("calculator unit test", () => {
           { type: "add" },
           { type: "value", payload: 7 },
         ],
-        ctx
+        ctx,
       );
       expect(result).toBeNaN();
       expect(ctx).toEqual({
